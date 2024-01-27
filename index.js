@@ -1,34 +1,50 @@
 const express = require("express")
+const rewrite = require('http-rewrite-middleware');
 const morgan = require("morgan");
 const chalk = require("chalk");
 
 const app = express()
 
+
 // Use morgan for logging requests
 app.use(morgan("dev"));
 
+// Define rewrite rules
+const rewriteRules = [
+	{
+		from: '.*',
+		to: '/',
+	},
+];
 
-// Middleware to add a custom header to all responses
-app.use((req, res, next) => {
+// Apply rewrite middleware
+app.use(rewrite.getMiddleware(rewriteRules));
+
+// Serve a local HTML file
+const customHtmlMiddleware = (req, res, next) => {
+	res.sendFile(`${__dirname}/servicea.html`)
 	res.setHeader("X-Custom-Header", "Hello From The Proxy Server!");
-	next();
+
+}
+
+// Apply middleware
+app.use((req, res, next) => {
+	if (req.url === '/') {
+		// If the request is to the root, use custom HTML middleware
+		customHtmlMiddleware(req, res, next);
+	} else {
+		next()
+	}
 });
+
 
 const port = process.env.PORT || 8080
 
 
-app.get("/", (req, res) => {
-	// console.log(req)
-	res.sendFile(`${__dirname}/servicea.html`)
-})
-
-
-// ASCII art banner
-console.log(chalk.blueBright.bold("\n==============================================="));
-console.log(chalk.greenBright.bold("       🙀    Proxy Server is Running    🙀         "));
-console.log(chalk.blueBright.bold("===============================================\n"));
-
 app.listen(port, () => {
-	console.log(`Proxy Server is listening on Port ${port}`)
+	// ASCII art banner
+	console.log(chalk.blueBright.bold("\n==============================================="));
+	console.log(chalk.greenBright.bold(`🙀    Proxy Server is Running on port ${port}  🙀`));
+	console.log(chalk.blueBright.bold("===============================================\n"));
 }
 )
