@@ -8,6 +8,7 @@ const app = express()
 
 // Use morgan for logging requests
 app.use(morgan("dev"));
+app.use(express.static('public'));
 
 // Define rewrite rules
 const rewriteRules = [
@@ -22,7 +23,7 @@ app.use(rewrite.getMiddleware(rewriteRules));
 
 // Serve a local HTML file
 const customHtmlMiddleware = (req, res, next) => {
-	res.sendFile(`${__dirname}/servicea.html`)
+	res.sendFile(`${__dirname}/public/intercept.html`)
 	res.setHeader("X-Custom-Header", "Hello From The Proxy Server!");
 
 }
@@ -37,6 +38,10 @@ app.use((req, res, next) => {
 	}
 });
 
+app.use((err, req, res, next) => {
+	console.error(err);
+	res.status(500).send(err.message);
+});
 
 const port = process.env.PORT || 8080
 

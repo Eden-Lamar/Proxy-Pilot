@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>404 - Page Not Found</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				background-color: #000; /* Fallback color */
+				background-image: url("./sw.gif");
+				background-size: cover;
+				background-position: center;
+				color: #fff;
+				font-family: Arial, sans-serif;
+			}
+
+			.container {
+				text-align: center;
+			}
+
+			h1 {
+				font-size: 2rem;
+				margin-bottom: 20px;
+				text-transform: capitalize;
+				animation: shake 0.8s ease infinite;
+			}
+
+			@keyframes shake {
+				0% {
+					transform: translateX(-10px);
+				}
+				50% {
+					transform: translateX(10px);
+				}
+				100% {
+					transform: translateX(-10px);
+				}
+			}
+
+			p {
+				font-size: 1.5rem;
+				margin-bottom: 20px;
+				text-transform: capitalize;
+			}
+
+			.glow {
+				color: #f00;
+				text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>your request has been intercepted</h1>
+			<p class="glow">😈😈 Page Not Found 😈😈</p>
+		</div>
+	</body>
+</html>
